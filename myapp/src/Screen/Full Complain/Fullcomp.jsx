@@ -4,6 +4,8 @@ import Navbar from '../../components/Navbar'
 import Comments from '../../components/Comments/Comments'
 import MyComments from '../../components/Comments/MyComments'
 import { Link, useParams } from 'react-router-dom'
+
+
 export default function Fullcomp() {
   const { id } = useParams();
   const [complain, setcomplain] = useState("");
@@ -68,21 +70,30 @@ export default function Fullcomp() {
 
 
   }
+
+
   useEffect(() => {
     getComplain();
   }, []);
+
+
   // console.log(complain);
   const comments = complain.comments
   // console.log(comments);
   const useremail = localStorage.getItem('email');
+
+
   const Onchange = (event) => {
     setresponse(event.target.value);
   }
+  
   return (
     <div id='full_comp'>
       <div>
         <Navbar></Navbar>
       </div>
+
+
       {complain ? (
         <>
           <div id='comp_cont'>
@@ -109,6 +120,7 @@ export default function Fullcomp() {
           </div>
 
           <div>{(x) ? <>
+
             <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
               <div id='content' >
                 <div className="mb-3">
@@ -119,8 +131,11 @@ export default function Fullcomp() {
               <button type="submit" className="btn btn-primary">Submit</button>
               <button type="submit" className="btn btn-danger" onClick={handlechange}>Cancel</button>
             </form>
+
+
           </>
-            : <button className='btn btn-success' onClick={handlechange}> Add Comment</button>}</div>
+            : <button className='btn btn-success' onClick={handlechange}> Add Comment</button>}
+            </div>
         </>
       ) : (
         <p>Loading...</p>

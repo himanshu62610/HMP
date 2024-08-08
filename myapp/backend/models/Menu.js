@@ -1,41 +1,3 @@
-// const mongoose = require('mongoose');
-
-// const menuSchema = new mongoose.Schema({
-//   day: {
-//     type: String,
-//     required: true,
-//     enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-//   },
-//   meals: {
-//     breakfast: [{
-//       type: String,
-//       required: true
-//     }],
-//     lunch: [{
-//       type: String,
-//       required: true
-//     }],
-//     dinner: [{
-//       type: String,
-//       required: true
-//     }],
-//     evening: [{
-//       type: String,
-//       required: true
-//     }]
-//   },
-
-//   hostel:{
-//     type: String,
-//      required: true,
-//     enum: ['Tandon', 'Malviya', 'Tilak']
-//   }
-// });
-
-// const Menu = mongoose.model('Menu', menuSchema);
-
-// module.exports = Menu;
-
 const mongoose = require('mongoose');
 
 const menuSchema = new mongoose.Schema({
@@ -44,6 +6,15 @@ const menuSchema = new mongoose.Schema({
     required: true,
     enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   },
+
+  //meals is a object where breakfast ,launch,evening,dinner  are the array in which each value is a object 
+  //in which each value conatin  string
+
+  //mealtype--breakfast ,lunch, evening,,dinner
+  //meal type conatin list of string that why mealtype is a array
+  //if memaltype conatin only one string we can mke it string  sinle string with spaces
+
+  //why mealtype is an array
   meals: {
     breakfast: [{
       type: String,
@@ -63,11 +34,18 @@ const menuSchema = new mongoose.Schema({
     }]
   },
 
+
+
   hostel:{
     type: String,
      required: true,
     enum: ['Tandon', 'Malviya', 'Tilak']
   },
+   
+
+  //ratings is a object where breakfast ,launch,evening,dinner  are the array in which each value is a object 
+  //in which each value conatin email and rating
+
   ratings: {
     breakfast: [{
       email: {
@@ -120,6 +98,8 @@ const menuSchema = new mongoose.Schema({
       }
     }]
   }
+
+
 });
 
 const Menu = mongoose.model('Menu', menuSchema);

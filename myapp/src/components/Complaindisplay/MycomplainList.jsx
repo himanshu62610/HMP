@@ -3,9 +3,13 @@ import Post from '../Post'
 import axios from "axios";
 import './ComplainList.css'
 import { useNavigate } from 'react-router-dom';
+
+
 export default function ComplainList() {
   const navigate = useNavigate();
-  const [complains, setcomplain] = useState([])
+  const [complains, setcomplain] = useState([]);
+
+
   const handleDelete = async (id) => {
     try {
       const res = await axios.delete(`http://localhost:5000/api/delete/${id}`, {
@@ -13,10 +17,13 @@ export default function ComplainList() {
       // navigate('/home');
       window.location.reload();
       alert("complain deleted success");
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
     }
   }
+
+
   const getComplaints = async () => {
     try {
       const res = await axios.post("http://localhost:5000/api/complaindata", {
@@ -25,17 +32,23 @@ export default function ComplainList() {
       if (res.data.success) {
         setcomplain(res.data.data);
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
     }
   };
+
 
   useEffect(() => {
 
     getComplaints();
   }, []);
+
+
   const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
+
+
   return (
     <div id='post_id'>
       {/* <Post title='Hostel safety' url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPElmzWCeKaGAm9lOTJTYPJ9PqVQKVisTmpQ&usqp=CAU' date="2023-11-12T07:06:00.233Z"></Post> */}

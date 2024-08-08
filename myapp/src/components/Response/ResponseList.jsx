@@ -4,6 +4,8 @@ import ResPost from '../ResponsePost/ResPost'
 import axios from "axios";
 export default function ComplainList() {
   const [complains, setcomplain] = useState([])
+
+
   const getComplaints = async () => {
     try {
       const res = await axios.post("http://localhost:5000/api/complaindata",{
@@ -20,6 +22,7 @@ export default function ComplainList() {
   useEffect(() => {
     getComplaints();
   }, []);
+
   return (
     <div>
       {/*Post the requested complians*/}

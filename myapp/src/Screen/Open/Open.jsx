@@ -1,6 +1,7 @@
 import React from 'react'
 import './Open.css'
 import { Link } from 'react-router-dom'
+
 export default function Open() {
   return (
     <>

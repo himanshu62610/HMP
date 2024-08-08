@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import Navbar from '../Navbar'
 import './Review.css'
@@ -5,13 +6,20 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 // import { useState } from 'react'
 export default function Review() {
     let navigate = useNavigate();
+
     const meals = ["Breakfast","Lunch","Evening","Dinner"];
     const types = [0,1,2,3,4,5];
+
+
     const [mealtime,setmealtime]=useState("")
     const [credentials, setcredentials] = useState({mealtime: "" , review:0});
     const [loading, setLoading] = useState(false);
+
     const day = useParams().day;
     console.log(day)
+
+
+
     const handleSubmit = async (e) => {
       e.preventDefault();
       setLoading(true);
@@ -35,28 +43,39 @@ export default function Review() {
         // console.log(localStorage.getItem("authToken"));
         navigate('/mess');
       }
-      } catch (error) {
+      } 
+      catch (error) {
         console.error('Error during registration:', error.message);
       } finally {
         setLoading(false);
       }
     };
+
+
     const Onchange = (event) => {
         setcredentials({ ...credentials, [event.target.name]: event.target.value })
     }
+
     return (
         <div>
             
             <div>
                 <Navbar></Navbar>
             </div>
+
+
             <div className='container' id="form_details">
+              {/* heading */}
                 <div>
                     <h1 id='complain_head'>Review Panel</h1>
                 </div>
+
+
                 <form onSubmit={handleSubmit} id="myForm">
 
                 <div id='content' >
+
+
                     <div className="mb-3">
           <label htmlFor="category" className="form-label">
             <b>*Meals</b>
@@ -77,6 +96,8 @@ export default function Review() {
             ))}
           </select>
         </div>
+
+
         <div className="mb-3">
           <label htmlFor="category" className="form-label">
             <b>*Star</b>
@@ -97,9 +118,13 @@ export default function Review() {
             ))}
           </select>
         </div>
+
                 </div>
+
                 <button type="submit" className="btn btn-primary">Submit</button>  
+
                 <Link to='/mess' className='m-3 btn btn-danger'>Back</Link>
+
                 </form>
             </div>
         </div>

@@ -2,8 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'
 import './Mess.css'
 import { Link, json } from 'react-router-dom'
+import axios from 'axios';
+
+
+
 function Mess() {
+
   const [menuData, setMenuData] = useState([]);
+  //const [members, setMembers] = useState([]);
+  const [committeeMembers, setCommitteeMembers] = useState([]);
+
+
   const [editingDay, setEditingDay] = useState(null);
   const [updatedMenu, setUpdatedMenu] = useState({
     breakfast: '',
@@ -12,8 +21,9 @@ function Mess() {
     evening: '',
   });
 
-  const role = localStorage.getItem('role');
+  const role =2;//localStorage.getItem('role');
   const hostel = localStorage.getItem('hostel');
+
   useEffect(() => {
     // Fetch menu data from the server
     fetch('http://localhost:5000/api/get-menu-for-week', {
@@ -39,12 +49,16 @@ function Mess() {
 
   }, []); // Empty dependency array ensures the effect runs only once on mount
 
+
+  
+//ye samjhna hai
   const handleEditButtonClick = (day) => {
     setEditingDay(day);
     // Initialize the updatedMenu state with the current menu data for the selected day
     const currentMenu = menuData.find(menu => menu.day === day);
     setUpdatedMenu(currentMenu.meals);
   };
+
 
   const handleUpdateMenu = async () => {
     try {
@@ -63,6 +77,10 @@ function Mess() {
       if (updateResponse.ok) {
         console.log(`Menu updated successfully for ${editingDay}`);
         // Update the state with the edited data
+
+
+
+
         setMenuData(prevMenuData => {
           const updatedMenuData = prevMenuData.map(dayMenu => {
             if (dayMenu.day === editingDay) {
@@ -77,6 +95,10 @@ function Mess() {
         });
         // Reset the editing state
         setEditingDay(null);
+
+
+
+
       } else {
         console.error(`Failed to update menu for ${editingDay}`);
       }
@@ -84,6 +106,12 @@ function Mess() {
       console.error('Error updating menu:', error);
     }
   };
+
+
+
+
+  
+
 
 
   //for mess-members
@@ -120,7 +148,7 @@ function Mess() {
     // Initialize the updatedMenu state with the current menu data for the selected day
     const currentMem = members.find(mem => mem._id === id);
     // console.log(currentMem);
-    setUpdatedMember(currentMem);
+   setUpdatedMember(currentMem);
   };
 
   const handleSave = async () => {
@@ -153,6 +181,9 @@ function Mess() {
     setEditingMemberid(null);
   };
 
+
+
+
   const handleAddMemberClick = () => {
     setAddingMember(true);
   };
@@ -175,7 +206,7 @@ function Mess() {
         setAddingMember(false);
         window.location.reload();
       } else {
-        console.error('Failed to add member');
+       alert('Failed to add member');
       }
     } catch (error) {
       console.error('Error adding member:', error);
@@ -190,6 +221,12 @@ function Mess() {
       hostel: '',
     });
   };
+
+
+
+
+
+
 
 
 
@@ -212,6 +249,8 @@ function Mess() {
 
   let sum = 0;
 
+
+
   const handleEditcommiteeClick = (id) => {
     // console.log(member);
     setEditingcommiteeMemberid(id);
@@ -221,6 +260,7 @@ function Mess() {
     // console.log(currentMem);
     setUpdatedcommiteeMember(currentcommiteeMem);
   };
+
 
   const handlecommiteeSave = async () => {
     try {
@@ -240,8 +280,10 @@ function Mess() {
       if (response.ok) {
         console.log(`Member ${editingcommiteeMemberid} updated successfully`);
         setEditingcommiteeMemberid(null);
-        window.location.reload();
-      } else {
+        window.location.reload();//reload the page
+      } 
+      else {
+        //alert("invalid details");
         console.error(`Failed to update member ${editingcommiteeMemberid}`);
       }
     } catch (error) {
@@ -253,9 +295,12 @@ function Mess() {
     setEditingcommiteeMemberid(null);
   };
 
+
+
   const handleAddcommiteeMemberClick = () => {
     setAddingcommiteeMember(true);
   };
+
 
   const handleAddcommiteeMember = async () => {
     try {
@@ -278,7 +323,7 @@ function Mess() {
         //   post: '',
         //   hostel: '',
         // });
-        window.location.reload();
+        window.location.reload();//reload the page
       } else {
         console.error('Failed to add commitee');
       }
@@ -298,15 +343,22 @@ function Mess() {
   };
 
   console.log(menuData);
+
+
   return (
     <>
       <div>
         <Navbar></Navbar>
       </div>
+
+
       <div className='container' id='head'>
         <h1><u>Mess Menu</u></h1>
       </div>
+
+
       <div className='container'>
+
         <table className="table">
           <thead>
             <tr>
@@ -318,11 +370,12 @@ function Mess() {
               <th scope="col">Dinner(8:00 pm to 9:30 pm)</th>
               {(role!=2)?
               <th scope="col">Review</th>:""}
-              {(localStorage.getItem("role") == 1) ?
+              {(role=== 1) ?
                 <th scope="col">Actions</th> : ""
               }
             </tr>
           </thead>
+
           <tbody>
             {menuData.map((dayMenu, index) => (
               <tr key={dayMenu.day}>
@@ -374,15 +427,27 @@ function Mess() {
                     <td>{Array.isArray(dayMenu.meals.breakfast)
                       ? dayMenu.meals.breakfast.join(', ')
                       : dayMenu.meals.breakfast}
+
+                      {/* represent the breakfast either as seperated commas aur as a single string */}
+
                       {
                         dayMenu.ratings.breakfast.map((data) => {
                           sum += data.value
                         })
-                      }<div id='rating'>
+                      }
+                      {/* find the sum of rating */}
+
+                      <div id='rating'>
                         <span class="fa fa-star checked"></span>
                         {sum / dayMenu.ratings.breakfast.length}
+                        {/* find the avg rating */}
                       </div>
+
+                      {/* set the sum var 0; */}
                       <div id='sum'>{sum = 0}</div></td>
+
+
+
                     <td>{Array.isArray(dayMenu.meals.lunch)
                       ? dayMenu.meals.lunch.join(', ')
                       : dayMenu.meals.lunch}
@@ -394,6 +459,8 @@ function Mess() {
                         <span class="fa fa-star checked"></span>
                         {sum / dayMenu.ratings.lunch.length}
                       </div><div id='sum'>{sum = 0}</div></td>
+
+
                     <td>{Array.isArray(dayMenu.meals.evening)
                       ? dayMenu.meals.evening.join(', ')
                       : dayMenu.meals.evening}
@@ -405,6 +472,8 @@ function Mess() {
                         <span class="fa fa-star checked"></span>
                         {sum / dayMenu.ratings.evening.length}
                       </div><div id='sum'>{sum = 0}</div></td>
+
+
                     <td>{Array.isArray(dayMenu.meals.dinner)
                       ? dayMenu.meals.dinner.join(', ')
                       : dayMenu.meals.dinner}
@@ -416,13 +485,18 @@ function Mess() {
                         <span class="fa fa-star checked"></span>
                         {sum / dayMenu.ratings.dinner.length}
                       </div><div id='sum'>{sum = 0}</div></td>
+
+
+
                       {(role != 2)?
                     <td> <Link to={`/review/${dayMenu.day}`}>
                       <button className='btn btn-success'>Review</button>
                     </Link>
                     </td>:""}
                     <td>
-                      {(localStorage.getItem("role") == 1) ?
+
+
+                      {(role === 1) ?
                         <button
                           className='btn btn-danger'
                           onClick={() => handleEditButtonClick(dayMenu.day)}
@@ -439,17 +513,26 @@ function Mess() {
           </tbody>
         </table>
       </div>
+
+
+
+
+
       <div id='mess_mess-members'>
+
         <div id='mess_head'>
           <center>
             <u>MESS DETAILS</u>
           </center>
         </div>
+
         <div className='row'>
 
           <div className='col'>
             <h2 id='mess_det_head'>Mess Members</h2>
+
             <table className='table' id='table1'>
+
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -461,6 +544,8 @@ function Mess() {
                   {/* <th scope="col">Date of joining </th> */}
                 </tr>
               </thead>
+
+
               <tbody>
                 {members.map((member, index) => (
                   <tr key={member._id}>
@@ -472,7 +557,7 @@ function Mess() {
                           {/* {console.log("nksdnkn")} */}
                           <input
                             type="text"
-                            value={updatedMember.name}
+                            value={updatedMember.name}//can not use placeholder
                             onChange={(e) => setUpdatedMember({ ...updatedMember, name: e.target.value })}
                           /></td>
                         <td>
@@ -506,24 +591,32 @@ function Mess() {
                 ))}
               </tbody>
             </table>
+
+
             <center>
               {addingMember ? (
                 <div>
+
                   <h3>Add New Member</h3>
-                  <label>Name:</label>
+
+                  <label htmlFor='editMessMemberName'>Name:</label>
                   <input
                     type="text"
                     value={newMember.name}
+                    id='editMessMemberName'
                     onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
                   />
-                  <label>Post:</label>
+                  <label htmlFor='editMessMemberPost'>Post:</label>
                   <input
                     type="text"
                     value={newMember.post}
+                    id='editMessMemberPost'
                     onChange={(e) => setNewMember({ ...newMember, post: e.target.value })}
                   />
+
                   <button className='btn btn-success' onClick={handleAddMember}>Add Member</button>
                   <button className='btn btn-secondary' onClick={handleCancelAddMember}>Cancel</button>
+
                 </div>
               ) : (
                 <div>
@@ -535,20 +628,31 @@ function Mess() {
               )}
             </center>
           </div>
+
+
+
+
           <div className='col'>
+
             <h2 id='mess_det_head'>Commitee Members</h2>
+
             <table className='table' id='table1'>
+
               <thead>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
                   <th scope="col">Post</th>
+
                   {(role == 2) ?
                     <th scope="col">Edit details</th> : ""
                   }
+
                   {/* <th scope="col">Date of joining </th> */}
                 </tr>
               </thead>
+
+
               <tbody>
                 {commiteemembers.map((commiteemember, index) => (
                   <tr key={commiteemember._id}>
@@ -601,22 +705,30 @@ function Mess() {
                 ))}
               </tbody>
             </table>
+
             <center>
+
               {addingcommiteeMember ? (
                 <div>
                   <h3>Add New commitee Member</h3>
+
+
                   <label>Name:</label>
                   <input
                     type="text"
                     value={newcommiteeMember.name}
                     onChange={(e) => setNewcommiteeMember({ ...newcommiteeMember, name: e.target.value })}
                   />
+
+
                   <label>Post:</label>
                   <input
                     type="text"
                     value={newcommiteeMember.post}
                     onChange={(e) => setNewcommiteeMember({ ...newcommiteeMember, post: e.target.value })}
                   />
+
+
                   <label>Email:</label>
                   <input
                     type="text"
@@ -626,6 +738,7 @@ function Mess() {
 
                   <button className='btn btn-success' onClick={handleAddcommiteeMember}>Add Member</button>
                   <button className='btn btn-secondary' onClick={handleCancelAddcommiteeMember}>Cancel</button>
+
                 </div>
               ) : (
                 <div>
@@ -638,6 +751,8 @@ function Mess() {
           </div>
         </div>
       </div>
+
+
       <>
         {(role == 0 || role == 1) ?
           <div className='container' id='info'>

@@ -6,13 +6,17 @@ const mongoDB = require('./db')
 const fileupload = require('express-fileupload')
 app.use(cors());
 mongoDB();
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 app.use(fileupload({
   useTempFiles:true
 }))
+
+
 app.use(express.json())
+
 app.use('/api',require('./Router/Complainadded'));
 // for Block user
 app.use('/api',require('./Router/BlockUser'));
@@ -32,6 +36,7 @@ app.use('/api',require('./Router/Edit_menu'))
 app.use('/api',require('./Router/Responseadded'))
 app.use('/api',require('./Router/reatedmenu'))
 // Create a Complain model
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

@@ -2,11 +2,26 @@ const express = require('express');
 const router = express.Router();
 const Member = require('../models/Messcommitee'); 
 const User = require('../models/User') 
+
+
 // Create a new mess member
 router.post('/add-commitee-member', async (req, res) => {
+  //fetch data
     const { name, post, hostel,email} = req.body;
     
+    //we are saving new  Member after updating role of a user
+    //we are not using id instead of email for finding entry --get id by middleware
+
+  //valid post value
+    const allowedPosts = ['Worker Head', 'Worker', 'Grocery Manager', 'Chef'];
+
     try {
+
+      if (!allowedPosts.includes(post)) {
+        return res.status(400).json({ message: 'Invalid post. Must be one of Worker Head, Worker, Grocery Manager, or Chef.' });
+      }
+
+      
       // Create a new member
       const newMember = new Member({
         name,
@@ -14,9 +29,12 @@ router.post('/add-commitee-member', async (req, res) => {
         hostel,
         email
       });
+
+      //update the role of a user
       const user=await User.findOne({email:req.body.email});
       user.role="1";
  await  user.save();
+
       // Saving the new member to the database
       
       const savedMember = await newMember.save();
@@ -33,6 +51,8 @@ router.post('/add-commitee-member', async (req, res) => {
 router.put('/update-commitee-member/:id', async (req, res) => {
   const memberId = req.params.id;
   console.log(memberId)
+
+  
   const user=await Member.findOne({_id:memberId});
   console.log(user.email)
     const user2=await User.findOne({email:user.email});
@@ -88,8 +108,11 @@ router.delete('/delete-commitee-member/:id',async (req,res)=>{
   try {
     const x = await User.findById(memberid);
     x.role="0";
-    const id = await Member.findOne({email:x.email}); 
+    const id = await Member.findOne({email:x.email}); //why are we not deleting user by findOneAndDelete
+
+    //console.log(result);
     const result = await Member.findByIdAndDelete(id); 
+    //console.log(result);
     await x.save();
     if (!result) {
       return res.status(404).json({ error: 'Commitee member not found' });

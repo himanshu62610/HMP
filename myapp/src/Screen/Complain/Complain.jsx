@@ -5,6 +5,8 @@ import './Complain.css'
 import { Link } from 'react-router-dom'
 import ComplainList from '../../components/Complaindisplay/ComplainList'
 {/* // copmlain portal */ }
+
+
 export default function Complain() {
     const role = localStorage.getItem("role");
     return (
@@ -12,10 +14,13 @@ export default function Complain() {
             <Navbar></Navbar>
             <div className='container' id='comp'>
                 {/* heading */}
+
                 <div id='com_head'>Complains</div>
+                
                 <div>
                     <ComplainList></ComplainList>
                 </div>
+
                 <div className='comp_btn'>
                     {(role == 0)? 
                     <Link to='/complainform'>
@@ -23,6 +28,7 @@ export default function Complain() {
                     </Link>
                         :""}
                 </div>
+
             </div>
         </div>
     )

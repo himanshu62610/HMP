@@ -3,13 +3,24 @@ const { Routes } = require('react-router-dom');
 const Details = require('../models/Details')
 const User = require('../models/User') 
 const router = express.Router()
+
+
 //calling the router
+
+//show all complains of a particular hostel
 router.post('/complaindata',async (req,res)=>{
     try{
         //sending the globalized data in response so that it can be use further
         
         const complaints=await Details.find({hostel:req.body.hostel}).sort({countupvote:-1,countdownvote:1});
-      
+      //sort the data on the basis of upvote and downvote
+      //on the basis of upvote sort the data in des order
+      //on the basis of downvote sort the data in inc order
+
+      //The combined sorting ensures that documents with the highest number of upvotes appear first,
+      // and for documents with the same number of upvotes, those with the fewest downvotes appear first.
+
+
        //console.log(complaints);
        res.status(200).send({
         success: true,
@@ -25,6 +36,11 @@ router.post('/complaindata',async (req,res)=>{
       });
     }
   })
+
+
+
+
+  //get the userdata of particlaur hostel
   router.post('/userdata',async (req,res)=>{
     try{
         //sending the globalized data in response so that it can be use further
@@ -47,6 +63,9 @@ router.post('/complaindata',async (req,res)=>{
     }
   })
 
+
+
+//get the specific complain
   router.get('/complain/:id',async (req,res)=>{
     try{
         //sending the globalized data in response so that it can be use further
@@ -67,6 +86,10 @@ router.post('/complaindata',async (req,res)=>{
       });
     }
   })
+
+
+
+
   router.post("/upvote/:id", async (req, res) => {
     const id  = req.params.id;
     const  email  = req.body.email;
@@ -93,6 +116,9 @@ router.post('/complaindata',async (req,res)=>{
         return res.json({ success: false, message: 'Error upvoting complaint.' });
     }
 });
+
+
+
 
 router.post("/downvote/:id", async (req, res) => {
     const id = req.params.id;

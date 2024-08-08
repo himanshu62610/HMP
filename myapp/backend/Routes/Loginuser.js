@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const secretkey="abhishekshuklafromnnitallahabad";
 const userModel = require('../models/User');
 const bcrypt = require("bcryptjs");
+
 router.post('/login', async (req, res) => {
     try {
       const user = await userModel.findOne({ email: req.body.email });

@@ -2,13 +2,23 @@ const express = require('express');
 const router = express.Router();
 const Menu = require('../models/Menu'); // Adjust the path accordingly
 
+
 // POST route to add a rating for a specific meal
+
+
 router.post('/addRating/:day/:mealType', async (req, res) => {
   try {
     const day = req.params.day;
-    console.log(day)
     const mealType = req.params.mealType;
     const email = req.body.email; // Assuming you have a user object in the request after authentication
+
+    // console.log("hello");
+    // console.log(mealType);
+    // console.log(`ratings.${mealType.toLowerCase()}`);
+    // console.log("hi");
+    
+
+    //same user same day same  mealtype par multiple review nahi lar sakta
 
     const existingReview = await Menu.findOne({
       day: day,
@@ -36,7 +46,7 @@ router.post('/addRating/:day/:mealType', async (req, res) => {
       { new: true }
     );
 
-    console.log(updatedMenu);
+    //console.log(updatedMenu);
 
     if (!updatedMenu) {
       return res.status(404).json({ error: 'Menu not found.',success:false });
@@ -48,6 +58,10 @@ router.post('/addRating/:day/:mealType', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
+
 
 
 // Route to get average rating for a specific mealtime day-wise
@@ -65,7 +79,10 @@ router.post('/average-rating/:day/:mealType', async (req, res) => {
     // Fetch all ratings for the specified day, mealType, and hostel
     const menus = await Menu.find({ day, hostel })
       .select(`ratings.${mealType}`);
+
+      
     console.log(menus);
+
     // Extract all ratings for the specified mealType
     const ratingsArray = menus
       .map(menu => menu.ratings[mealType].map(rating => rating.value))
@@ -82,11 +99,19 @@ router.post('/average-rating/:day/:mealType', async (req, res) => {
 });
 
 
+
+
+
+
+
+//rating is array that contain  all the rating of a particular mealtype;
 // Function to calculate the average rating
 function calculateAverageRating(ratings) {
   if (ratings.length === 0) {
     return null; // Or any default value for no ratings
   }
+
+  //avg rating===totalRating means sum of the array/lenght of the array;
 
   const totalRating = ratings.reduce((sum, rating) => sum + rating, 0);
   console.log(totalRating,ratings.length);
