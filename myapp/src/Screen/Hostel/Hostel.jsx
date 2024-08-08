@@ -7,7 +7,7 @@ import Graph from "../../components/Graph/Graph";
 import { useState,useEffect } from "react";
 const Hostel = () => {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading , setLoading] = useState(true);
   const [year, setyear] = useState('2023');
   
   useEffect(() => {
